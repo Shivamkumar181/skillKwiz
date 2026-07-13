@@ -10,6 +10,7 @@ import TestimonialsSection from "@/components/testimonials-section";
 export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const autoPlayRef = useRef<NodeJS.Timeout | null>(null);
@@ -54,8 +55,32 @@ export default function HomePage() {
     },
   ];
 
+  // Preload images
   useEffect(() => {
-    if (isAutoPlaying) {
+    const loadImage = (src: string) => {
+      return new Promise((resolve, reject) => {
+        const img = new window.Image();
+        img.src = src;
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+    };
+
+    const preloadImages = async () => {
+      try {
+        await Promise.all(bannerData.map((banner) => loadImage(banner.src)));
+        setIsLoaded(true);
+      } catch (error) {
+        console.error("Error loading images:", error);
+        setIsLoaded(true);
+      }
+    };
+
+    preloadImages();
+  }, []);
+
+  useEffect(() => {
+    if (isAutoPlaying && isLoaded) {
       autoPlayRef.current = setInterval(() => {
         const nextSlide = (currentSlide + 1) % totalSlides;
         setCurrentSlide(nextSlide);
@@ -68,7 +93,7 @@ export default function HomePage() {
         clearInterval(autoPlayRef.current);
       }
     };
-  }, [currentSlide, isAutoPlaying]);
+  }, [currentSlide, isAutoPlaying, isLoaded]);
 
   const scrollToSlide = (index: number) => {
     if (sliderRef.current) {
@@ -149,7 +174,9 @@ export default function HomePage() {
       <div className="relative">
         <section
           ref={heroRef}
-          className="relative w-full h-screen text-white overflow-hidden"
+          className={`relative w-full h-screen text-white overflow-hidden transition-opacity duration-1000 ${
+            isLoaded ? "opacity-100" : "opacity-0"
+          }`}
           style={{ zIndex: 1 }}
         >
           {/* Banner Images */}
@@ -179,20 +206,26 @@ export default function HomePage() {
 
           {/* slide content */}
           <div className="relative z-10 h-full flex items-center justify-center">
-            <div className="text-center max-w-4xl px-6 animate-fadeInUp">
-              <h1 className={bannerData[currentSlide].titleStyle}>
+            <div className="text-center max-w-4xl px-6">
+              <h1
+                className={bannerData[currentSlide].titleStyle}
+                key={currentSlide + "-title"}
+              >
                 {bannerData[currentSlide].title}
               </h1>
-              <p className={bannerData[currentSlide].descStyle}>
+              <p
+                className={bannerData[currentSlide].descStyle + " mt-4"}
+                key={currentSlide + "-desc"}
+              >
                 {bannerData[currentSlide].description}
               </p>
               <Link
                 href="/services"
-                className="mt-5 inline-flex items-center justify-center bg-[#f73e5d] text-white px-10 py-4 rounded-full font-medium text-lg hover:bg-opacity-90 transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#f73e5d]/30 transform duration-300 group"
+                className="mt-8 inline-flex items-center justify-center bg-[#f73e5d] text-white px-10 py-4 rounded-full font-medium text-lg hover:bg-opacity-90 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-[#f73e5d]/30 group"
               >
                 Get Started
                 <svg
-                  className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"
+                  className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -211,7 +244,7 @@ export default function HomePage() {
           {/* Left Arrow */}
           <button
             onClick={prevSlide}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/40 backdrop-blur-sm hover:bg-black/60 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
+            className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
             aria-label="Previous slide"
           >
             <svg
@@ -232,7 +265,7 @@ export default function HomePage() {
           {/* Right Arrow */}
           <button
             onClick={nextSlide}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 z-20 bg-black/40 backdrop-blur-sm hover:bg-black/60 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
+            className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white p-3 rounded-full transition-all duration-300 hover:scale-110"
             aria-label="Next slide"
           >
             <svg
@@ -250,16 +283,16 @@ export default function HomePage() {
             </svg>
           </button>
 
-          {/* Scroll */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex gap-3">
+          {/* Scroll indicators */}
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20 flex gap-2.5">
             {bannerData.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`transition-all duration-500 ${
                   currentSlide === index
-                    ? "w-10 h-3 bg-white"
-                    : "w-3 h-3 bg-white/40 hover:bg-white/70"
+                    ? "w-8 h-2.5 bg-white"
+                    : "w-2.5 h-2.5 bg-white/40 hover:bg-white/60"
                 } rounded-full`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -267,6 +300,76 @@ export default function HomePage() {
           </div>
         </section>
       </div>
+
+      <style jsx global>{`
+        /* Professional fade in for banner */
+        .banner-enter {
+          opacity: 0;
+        }
+        .banner-enter-active {
+          opacity: 1;
+          transition: opacity 1000ms ease-in-out;
+        }
+
+        /* Smooth scroll behavior */
+        .scroll-smooth {
+          scroll-behavior: smooth;
+        }
+
+        /* Hide scrollbar */
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        /* Professional hover effects */
+        .hover-lift {
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+          transform: translateY(-2px);
+        }
+
+        /* Subtle fade for content sections */
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-on-scroll:nth-child(1) {
+          transition-delay: 0.1s;
+        }
+        .animate-on-scroll:nth-child(2) {
+          transition-delay: 0.2s;
+        }
+        .animate-on-scroll:nth-child(3) {
+          transition-delay: 0.3s;
+        }
+        .animate-on-scroll:nth-child(4) {
+          transition-delay: 0.4s;
+        }
+
+        /* Professional button hover */
+        .btn-primary {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 20px 40px -12px rgba(247, 62, 93, 0.4);
+        }
+
+        /* Image optimization */
+        .banner-image {
+          will-change: transform;
+        }
+      `}</style>
 
       <div className="bg-white relative" style={{ zIndex: 3 }}>
         <div className="animate-on-scroll">

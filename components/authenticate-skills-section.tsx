@@ -52,35 +52,35 @@ export default function AuthenticateSkillsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 bg-white overflow-hidden">
+    <section ref={sectionRef} className="py-20 bg-white overflow-hidden">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div
             ref={leftImagesRef}
             className="relative w-full md:w-1/3 h-[400px] md:h-[500px]"
           >
-            <div className="image-container absolute top-0 left-0 w-[80%] h-[80%] transform -rotate-12 hover:-rotate-6 transition-all duration-500 z-10 opacity-0 translate-x-[-50px]">
-              <div className="relative w-full h-full group">
+            <div className="image-container absolute top-0 left-0 w-[80%] h-[80%] transform -rotate-12 z-10 opacity-0 translate-x-[-50px]">
+              <div className="relative w-full h-full group overflow-hidden rounded-lg">
                 <Image
                   src="/images/homepage/skills_1.png"
                   alt="Professional working at night"
                   width={350}
                   height={500}
-                  className="rounded-lg object-cover w-full h-full shadow-xl transition-transform duration-700 group-hover:scale-105"
+                  className="rounded-lg object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-tr from-blue-500/0 via-transparent to-blue-500/0 group-hover:to-blue-500/10 transition-all duration-700"></div>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-tr from-blue-500/0 via-transparent to-blue-500/0 group-hover:from-blue-500/20 group-hover:to-blue-500/10 transition-all duration-700"></div>
               </div>
             </div>
-            <div className="image-container absolute bottom-0 left-[10%] w-[80%] h-[80%] transform -rotate-6 hover:rotate-0 transition-all duration-500 opacity-0 translate-x-[-30px] translate-y-[30px]">
-              <div className="relative w-full h-full group">
+            <div className="image-container absolute bottom-0 left-[10%] w-[80%] h-[80%] transform -rotate-6 opacity-0 translate-x-[-30px] translate-y-[30px]">
+              <div className="relative w-full h-full group overflow-hidden rounded-lg">
                 <Image
                   src="/images/homepage/skills_2.png"
                   alt="Professional in tech environment"
                   width={350}
                   height={500}
-                  className="rounded-lg object-cover w-full h-full shadow-xl transition-transform duration-700 group-hover:scale-105"
+                  className="rounded-lg object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-bl from-purple-500/0 via-transparent to-purple-500/0 group-hover:to-purple-500/10 transition-all duration-700"></div>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-bl from-purple-500/0 via-transparent to-purple-500/0 group-hover:from-purple-500/20 group-hover:to-purple-500/10 transition-all duration-700"></div>
               </div>
             </div>
           </div>
@@ -127,28 +127,28 @@ export default function AuthenticateSkillsSection() {
             ref={rightImagesRef}
             className="relative w-full md:w-1/3 h-[400px] md:h-[500px]"
           >
-            <div className="image-container absolute top-0 right-0 w-[80%] h-[80%] transform rotate-9 hover:rotate-6 transition-all duration-500 z-10 opacity-0 translate-x-[50px]">
-              <div className="relative w-full h-full group">
+            <div className="image-container absolute top-0 right-0 w-[80%] h-[80%] transform rotate-9 z-10 opacity-0 translate-x-[50px]">
+              <div className="relative w-full h-full group overflow-hidden rounded-lg">
                 <Image
                   src="/images/homepage/skills_3.png"
                   alt="Professional at workstation"
                   width={350}
                   height={500}
-                  className="rounded-lg object-cover w-full h-full shadow-xl transition-transform duration-700 group-hover:scale-105"
+                  className="rounded-lg object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-bl from-blue-500/0 via-transparent to-blue-500/0 group-hover:to-blue-500/10 transition-all duration-700"></div>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-bl from-blue-500/0 via-transparent to-blue-500/0 group-hover:from-blue-500/20 group-hover:to-blue-500/10 transition-all duration-700"></div>
               </div>
             </div>
-            <div className="image-container absolute bottom-0 right-[10%] w-[80%] h-[80%] transform rotate-6 hover:rotate-0 transition-all duration-500 opacity-0 translate-x-[30px] translate-y-[30px]">
-              <div className="relative w-full h-full group">
+            <div className="image-container absolute bottom-0 right-[10%] w-[80%] h-[80%] transform rotate-6 opacity-0 translate-x-[30px] translate-y-[30px]">
+              <div className="relative w-full h-full group overflow-hidden rounded-lg">
                 <Image
                   src="/images/homepage/skills_4.png"
                   alt="Business professional looking at digital interface"
                   width={350}
                   height={500}
-                  className="rounded-lg object-cover w-full h-full shadow-xl transition-transform duration-700 group-hover:scale-105"
+                  className="rounded-lg object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-tr from-purple-500/0 via-transparent to-purple-500/0 group-hover:to-purple-500/10 transition-all duration-700"></div>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-tr from-purple-500/0 via-transparent to-purple-500/0 group-hover:from-purple-500/20 group-hover:to-purple-500/10 transition-all duration-700"></div>
               </div>
             </div>
           </div>
@@ -181,6 +181,38 @@ export default function AuthenticateSkillsSection() {
 
         .animate-in .w-2 {
           opacity: 1 !important;
+        }
+
+        /* Professional hover effects - scale only */
+        .group:hover .group-hover\\:scale-110 {
+          transform: scale(1.1);
+        }
+
+        /* Smooth gradient overlay on hover */
+        .group:hover .bg-gradient-to-tr {
+          background: linear-gradient(
+            to top right,
+            rgba(59, 130, 246, 0.2),
+            rgba(59, 130, 246, 0.05)
+          );
+        }
+
+        .group:hover .bg-gradient-to-bl {
+          background: linear-gradient(
+            to bottom left,
+            rgba(168, 85, 247, 0.2),
+            rgba(168, 85, 247, 0.05)
+          );
+        }
+
+        /* Image container hover effect */
+        .group {
+          cursor: pointer;
+        }
+
+        /* Optional: Add a subtle border glow on hover */
+        .group:hover .rounded-lg {
+          box-shadow: 0 0 30px rgba(0, 65, 141, 0.1);
         }
       `}</style>
     </section>

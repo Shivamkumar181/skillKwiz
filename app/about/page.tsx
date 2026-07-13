@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { Play } from "lucide-react";
 
@@ -233,28 +234,160 @@ export default function AboutPage() {
       </section>
 
       {/* Video Section */}
-      <section className="w-full bg-white py-12">
+      <section className="w-full bg-white py-12 overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="relative">
-            <video
-              className="w-full h-auto rounded-lg"
-              controls
-              preload="none"
-              poster="/images/aboutpage/about_video.png"
-            >
-              <source
-                src="/images/aboutpage/about_video.mp4"
-                type="video/mp4"
-              />
-              Your browser does not support the video tag.
-            </video>
-            {/* <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-20 h-20 bg-[#00418d] rounded-full flex items-center justify-center cursor-pointer hover:bg-opacity-90 transition-all">
-                <Play className="w-10 h-10 text-white ml-1" />
+          <div className="relative group">
+            {/* Video Frame with Shadow Effect */}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-gray-200/50 transition-all duration-500 group-hover:shadow-gray-300/70">
+              {/* Gradient Border Effect */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#00418d] via-[#00a8e8] to-[#f73e5d] p-[3px] opacity-0 group-hover:opacity-100 transition-all duration-700">
+                <div className="w-full h-full bg-white rounded-2xl"></div>
               </div>
-            </div> */}
+
+              {/* Video Container */}
+              <div className="relative rounded-2xl overflow-hidden bg-black/5">
+                {/* Decorative elements */}
+                <div className="absolute top-4 right-4 z-10 flex gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-lg shadow-red-500/50 animate-pulse"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-lg shadow-yellow-500/50 animate-pulse delay-100"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-lg shadow-green-500/50 animate-pulse delay-200"></div>
+                </div>
+
+                <video
+                  className="w-full h-auto rounded-2xl transition-all duration-700 group-hover:scale-[1.01]"
+                  controls
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster="/images/aboutpage/about_video.png"
+                >
+                  <source
+                    src="/images/aboutpage/about_video.mp4"
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+
+                {/* Subtle Gradient Overlay */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"></div>
+
+                {/* Play Button Overlay (Auto-hidden when video plays) */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-all duration-500">
+                  <div className="w-20 h-20 bg-[#00418d]/90 backdrop-blur-sm rounded-full flex items-center justify-center pointer-events-auto cursor-pointer hover:bg-[#00418d] hover:scale-110 hover:shadow-2xl hover:shadow-[#00418d]/30 transition-all duration-300 transform">
+                    <svg
+                      className="w-10 h-10 text-white ml-1"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Progress Bar (Custom) */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/20 rounded-b-2xl overflow-hidden">
+                  <div className="h-full bg-gradient-to-r from-[#00418d] via-[#00a8e8] to-[#f73e5d] rounded-b-2xl transition-all duration-1000 animate-progress"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Video Title/Description (Optional) */}
+            <div className="mt-6 text-center transform transition-all duration-500 group-hover:translate-y-0 translate-y-2">
+              <h3 className="text-xl font-semibold text-[#00418d]">
+                Watch Our Story
+              </h3>
+              <p className="text-gray-600 text-sm mt-1">
+                Discover how SkillKwiz is transforming skill assessment
+              </p>
+            </div>
           </div>
         </div>
+
+        <style jsx>{`
+          @keyframes progress {
+            0% {
+              width: 0%;
+              opacity: 0;
+            }
+            10% {
+              opacity: 1;
+            }
+            90% {
+              opacity: 1;
+            }
+            100% {
+              width: 100%;
+              opacity: 0;
+            }
+          }
+
+          .animate-progress {
+            animation: progress 5s ease-in-out infinite;
+          }
+
+          /* Pulse animation for decorative dots */
+          .delay-100 {
+            animation-delay: 100ms;
+          }
+          .delay-200 {
+            animation-delay: 200ms;
+          }
+
+          /* Video frame hover effect */
+          .group:hover .shadow-2xl {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+          }
+
+          /* Custom video controls styling */
+          video::-webkit-media-controls-panel {
+            background: linear-gradient(
+              to top,
+              rgba(0, 0, 0, 0.8),
+              transparent
+            );
+          }
+
+          video::-webkit-media-controls-play-button {
+            background-color: #00418d;
+            border-radius: 50%;
+            padding: 8px;
+          }
+
+          video::-webkit-media-controls-current-time-display,
+          video::-webkit-media-controls-time-remaining-display {
+            color: white;
+          }
+
+          video::-webkit-media-controls-timeline {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+          }
+
+          video::-webkit-media-controls-volume-slider {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+          }
+
+          /* Smooth video loading */
+          video {
+            background: #f3f4f6;
+            min-height: 300px;
+          }
+
+          /* Responsive adjustments */
+          @media (max-width: 640px) {
+            .group:hover .scale-\[1\.01\] {
+              transform: scale(1);
+            }
+
+            .w-20 {
+              width: 16px;
+              height: 16px;
+            }
+          }
+        `}</style>
       </section>
     </>
   );

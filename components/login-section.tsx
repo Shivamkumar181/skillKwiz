@@ -1,18 +1,68 @@
 import { Play } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 export default function LoginSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const leftPanelRef = useRef<HTMLDivElement>(null);
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+  const iconRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Animate left panel
+            if (leftPanelRef.current) {
+              leftPanelRef.current.classList.add("animate-slide-in-left");
+            }
+
+            // Animate right panel
+            if (rightPanelRef.current) {
+              rightPanelRef.current.classList.add("animate-slide-in-right");
+            }
+
+            // Animate icons with stagger
+            iconRefs.current.forEach((icon, index) => {
+              if (icon) {
+                setTimeout(
+                  () => {
+                    icon.classList.add("animate-float-in");
+                  },
+                  index * 150 + 300,
+                );
+              }
+            });
+
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 },
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section className="py-16 bg-[#000c2a]">
+    <section ref={sectionRef} className="py-16 bg-[#000c2a] overflow-hidden">
       <div className="max-w-5xl mx-auto px-6">
         <div className="bg-white rounded-lg overflow-hidden shadow-xl flex flex-col md:flex-row">
           {/* Left side - Skill Assessment Library */}
-          <div className="w-full md:w-1/2 p-8 relative">
+          <div
+            ref={leftPanelRef}
+            className="w-full md:w-1/2 p-8 relative opacity-0 translate-x-[-50px]"
+          >
             <div className="flex flex-col h-full">
               <div className="text-center mb-6">
                 <div className="inline-block relative">
-                  {/*SVG Image */}
+                  {/* SVG Image */}
                   <svg
-                    className="w-20 h-20 mx-auto mb-4"
+                    className="w-20 h-20 mx-auto mb-4 transform transition-transform duration-700 hover:scale-110"
                     viewBox="0 0 100 100"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -164,22 +214,32 @@ export default function LoginSection() {
 
               <div className="grid grid-cols-3 gap-4 mb-6">
                 {/* Target icon */}
-                <div className="flex justify-center">
-                  <div className="w-16 h-16 relative">
-                    <div className="w-16 h-16 rounded-full border-2 border-[#f73e5d] flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full border-2 border-[#f73e5d] flex items-center justify-center">
-                        <div className="w-8 h-8 rounded-full border-2 border-[#f73e5d] flex items-center justify-center">
-                          <div className="w-2 h-2 bg-[#00a8e8] rounded-full"></div>
+                <div
+                  ref={(el) => {
+                    if (el) iconRefs.current[0] = el;
+                  }}
+                  className="flex justify-center opacity-0 translate-y-[30px]"
+                >
+                  <div className="w-16 h-16 relative transition-all duration-300 hover:scale-110 hover:rotate-12">
+                    <div className="w-16 h-16 rounded-full border-2 border-[#f73e5d] flex items-center justify-center transition-all duration-300 hover:border-[#f73e5d] hover:shadow-lg hover:shadow-[#f73e5d]/20">
+                      <div className="w-12 h-12 rounded-full border-2 border-[#f73e5d] flex items-center justify-center transition-all duration-300">
+                        <div className="w-8 h-8 rounded-full border-2 border-[#f73e5d] flex items-center justify-center transition-all duration-300">
+                          <div className="w-2 h-2 bg-[#00a8e8] rounded-full transition-all duration-300 group-hover:scale-150"></div>
                         </div>
                       </div>
                     </div>
-                    <div className="absolute top-3 right-0 w-4 h-1 bg-[#00a8e8] transform rotate-45"></div>
+                    <div className="absolute top-3 right-0 w-4 h-1 bg-[#00a8e8] transform rotate-45 transition-all duration-300 group-hover:rotate-90"></div>
                   </div>
                 </div>
 
                 {/* Chart icon */}
-                <div className="flex justify-center">
-                  <div className="w-16 h-16">
+                <div
+                  ref={(el) => {
+                    if (el) iconRefs.current[1] = el;
+                  }}
+                  className="flex justify-center opacity-0 translate-y-[30px]"
+                >
+                  <div className="w-16 h-16 transition-all duration-300 hover:scale-110 hover:rotate-12">
                     <svg
                       width="64"
                       height="64"
@@ -193,6 +253,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M12 20V4"
@@ -200,6 +261,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M6 20V14"
@@ -207,23 +269,34 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                     </svg>
                   </div>
                 </div>
 
                 {/* Play button */}
-                <div className="flex justify-center">
-                  <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-colors">
-                    <Play className="w-8 h-8 text-gray-700 ml-1" />
+                <div
+                  ref={(el) => {
+                    if (el) iconRefs.current[2] = el;
+                  }}
+                  className="flex justify-center opacity-0 translate-y-[30px]"
+                >
+                  <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-300 transition-all duration-300 hover:scale-110 hover:shadow-lg">
+                    <Play className="w-8 h-8 text-gray-700 ml-1 transition-all duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-4 mt-auto">
                 {/* Magnifying glass */}
-                <div className="flex justify-center">
-                  <div className="w-16 h-16">
+                <div
+                  ref={(el) => {
+                    if (el) iconRefs.current[3] = el;
+                  }}
+                  className="flex justify-center opacity-0 translate-y-[30px]"
+                >
+                  <div className="w-16 h-16 transition-all duration-300 hover:scale-110 hover:rotate-12">
                     <svg
                       width="64"
                       height="64"
@@ -237,6 +310,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M21 21L16.65 16.65"
@@ -244,14 +318,20 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                     </svg>
                   </div>
                 </div>
 
                 {/* Users icon */}
-                <div className="flex justify-center">
-                  <div className="w-16 h-16">
+                <div
+                  ref={(el) => {
+                    if (el) iconRefs.current[4] = el;
+                  }}
+                  className="flex justify-center opacity-0 translate-y-[30px]"
+                >
+                  <div className="w-16 h-16 transition-all duration-300 hover:scale-110 hover:rotate-12">
                     <svg
                       width="64"
                       height="64"
@@ -265,6 +345,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M9 11C11.2091 11 13 9.20914 13 7C13 4.79086 11.2091 3 9 3C6.79086 3 5 4.79086 5 7C5 9.20914 6.79086 11 9 11Z"
@@ -272,6 +353,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M23 21V19C22.9986 17.1771 21.765 15.5857 20 15.13"
@@ -279,6 +361,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M16 3.13C17.7699 3.58317 19.0078 5.17799 19.0078 7.005C19.0078 8.83201 17.7699 10.4268 16 10.88"
@@ -286,14 +369,20 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                     </svg>
                   </div>
                 </div>
 
                 {/* Chart/report icon */}
-                <div className="flex justify-center">
-                  <div className="w-16 h-16">
+                <div
+                  ref={(el) => {
+                    if (el) iconRefs.current[5] = el;
+                  }}
+                  className="flex justify-center opacity-0 translate-y-[30px]"
+                >
+                  <div className="w-16 h-16 transition-all duration-300 hover:scale-110 hover:rotate-12">
                     <svg
                       width="64"
                       height="64"
@@ -307,6 +396,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M14 2V8H20"
@@ -314,6 +404,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M16 13H8"
@@ -321,6 +412,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M16 17H8"
@@ -328,6 +420,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                       <path
                         d="M10 9H9H8"
@@ -335,6 +428,7 @@ export default function LoginSection() {
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
+                        className="transition-all duration-300"
                       />
                     </svg>
                   </div>
@@ -344,42 +438,53 @@ export default function LoginSection() {
           </div>
 
           {/* Right side - Login Form */}
-          <div className="w-full md:w-1/2 bg-[#00418d] p-8 flex items-center">
+          <div
+            ref={rightPanelRef}
+            className="w-full md:w-1/2 bg-[#00418d] p-8 flex items-center opacity-0 translate-x-[50px]"
+          >
             <div className="w-full">
-              <h2 className="text-xl font-bold text-white mb-6">
+              <h2 className="text-xl font-bold text-white mb-6 transform transition-all duration-700 hover:translate-x-2">
                 Sign in to Skill Kwiz
               </h2>
 
               <form className="space-y-4">
-                <div>
+                <div className="transform transition-all duration-300 hover:translate-x-1">
                   <input
                     type="email"
                     placeholder="Email"
-                    className="w-full bg-gray-200 text-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00a8e8]"
+                    className="w-full bg-gray-200 text-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00a8e8] transition-all duration-300 hover:shadow-lg hover:shadow-[#00a8e8]/10"
                   />
                 </div>
 
-                <div>
+                <div className="transform transition-all duration-300 hover:translate-x-1">
                   <input
                     type="password"
                     placeholder="Password"
-                    className="w-full bg-gray-200 text-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00a8e8]"
+                    className="w-full bg-gray-200 text-gray-800 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-[#00a8e8] transition-all duration-300 hover:shadow-lg hover:shadow-[#00a8e8]/10"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <label className="flex items-center text-white">
-                    <input type="checkbox" className="h-4 w-4 mr-2" />
-                    Remember me
+                  <label className="flex items-center text-white cursor-pointer group">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 mr-2 transition-all duration-300 group-hover:scale-110"
+                    />
+                    <span className="transition-all duration-300 group-hover:text-[#00a8e8]">
+                      Remember me
+                    </span>
                   </label>
-                  <a href="#" className="text-white hover:underline">
+                  <a
+                    href="#"
+                    className="text-white hover:underline transition-all duration-300 hover:text-[#00a8e8] hover:scale-105"
+                  >
                     Forget Password?
                   </a>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-[#f73e5d] text-white p-3 rounded-md font-medium hover:bg-opacity-90 transition-all"
+                  className="w-full bg-[#f73e5d] text-white p-3 rounded-md font-medium transition-all duration-300 hover:bg-opacity-90 hover:scale-105 hover:shadow-xl hover:shadow-[#f73e5d]/30 transform"
                 >
                   Sign In
                 </button>
@@ -387,7 +492,7 @@ export default function LoginSection() {
                 <div className="text-center text-white">
                   <p className="mb-2">— Or Login with —</p>
                   <div className="flex justify-center space-x-4">
-                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-white/20 transform">
                       <svg
                         width="20"
                         height="20"
@@ -405,7 +510,7 @@ export default function LoginSection() {
                         />
                       </svg>
                     </button>
-                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                    <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl hover:shadow-white/20 transform">
                       <svg
                         width="20"
                         height="20"
@@ -430,6 +535,75 @@ export default function LoginSection() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        /* Left panel slide in animation */
+        .animate-slide-in-left {
+          animation: slideInLeft 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Right panel slide in animation */
+        .animate-slide-in-right {
+          animation: slideInRight 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)
+            forwards;
+        }
+
+        /* Icon float in animation */
+        .animate-float-in {
+          animation: floatIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes slideInLeft {
+          0% {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes slideInRight {
+          0% {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes floatIn {
+          0% {
+            opacity: 0;
+            transform: translateY(30px) scale(0.8);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        /* Hover effects for icons */
+        .group:hover .group-hover\\:scale-150 {
+          transform: scale(1.5);
+        }
+
+        .group:hover .group-hover\\:rotate-90 {
+          transform: rotate(90deg);
+        }
+
+        .group:hover .group-hover\\:translate-x-1 {
+          transform: translateX(4px);
+        }
+
+        /* Smooth transitions for all interactive elements */
+        * {
+          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+      `}</style>
     </section>
   );
 }
