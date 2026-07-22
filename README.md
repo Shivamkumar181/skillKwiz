@@ -27,9 +27,10 @@ I refactored the codebase to resolve several structural and visual issues reques
 
 ## Tech Stack
 
-*   **Next.js
-*   **Tailwind
-*   **Vercel
+*   Next.js
+*   Typescript
+*   Tailwind
+*   Vercel
 
 ---
 
