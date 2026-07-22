@@ -1,14 +1,12 @@
-# 🚀 skillKwiz
+# skillKwiz
 
 **skillKwiz** is a modern Next.js educational web platform built to empower students with skill development, interactive training modules, and placement preparation resources.
 
 This repository represents a completed **company assessment project**. I inherited a legacy/buggy codebase and successfully optimized the architecture, fixed critical routing bugs, overhauled the design layout, and integrated updated branding.
 
-🔗 **Live Link:** [skillKwiz on Vercel](https://vercel.app) *(Replace with your actual link)*
-
 ---
 
-## 🛠️ Assessment Deliverables & Bug Fixes
+##  Assessment Deliverables & Bug Fixes
 
 I refactored the codebase to resolve several structural and visual issues requested during the company assessment:
 
@@ -19,7 +17,7 @@ I refactored the codebase to resolve several structural and visual issues reques
 
 ---
 
-## 🌟 Core Application Features
+## Core Application Features
 
 *   **Placement Training:** Practice tracks engineered to prepare users for technical hiring rounds.
 *   **Skill Development:** Structured technical pathways for step-by-step learning.
@@ -27,15 +25,15 @@ I refactored the codebase to resolve several structural and visual issues reques
 
 ---
 
-## 💻 Tech Stack
+## Tech Stack
 
-*   **Framework:** Next.js (React)
-*   **Styling:** Tailwind CSS / CSS Modules
-*   **Deployment:** Vercel
+*   **Next.js
+*   **Tailwind
+*   **Vercel
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these instructions to set up and run the project locally.
 
@@ -66,13 +64,10 @@ Start the local development server:
 
 ```bash
 npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
 ---
 
-## 📦 Production Deployment
+## Production Deployment
 
 The project is optimized for deployment via **Vercel**:
 
